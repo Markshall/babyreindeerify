@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>babyreindeerify</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-PV3S2MV");
+    </script>
+    <!-- End Google Tag Manager -->
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-PV3S2MV"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div class="mx-auto py-12 max-w-2xl">
+      <h1 class="mb-3 font-medium text-3xl text-red-600">babyreindeerify</h1>
+
+      <label
+        for="message"
+        class="block text-sm font-medium leading-6 text-gray-900"
+        >Enter a message to babyreindeerify</label
+      >
+      <div class="mt-2">
+        <textarea
+          rows="4"
+          name="message"
+          id="message"
+          class="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+        ></textarea>
+
+        <div class="relative flex items-start mt-2">
+          <div class="flex h-6 items-center">
+            <input
+              id="iphone"
+              name="iphone"
+              type="checkbox"
+              class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+              checked
+            />
+          </div>
+          <div class="ml-3 text-sm leading-6">
+            <label for="iphone" class="font-medium text-gray-900"
+              >Add iPhone sign-off message</label
+            >
+          </div>
+        </div>
+
+        <button
+          class="rounded-md w-full block bg-red-600 px-2.5 py-3.5 mt-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          babyreindeerify
+        </button>
+      </div>
+      <div id="output" class="hidden border p-3 mt-6 rounded-md">
+        my curtans are erady for you
+      </div>
+    </div>
+
+    <script>
+      const babyReindeerify = (message, iphoneMessage = false) => {
+        const words = message.split(" ");
+        let response = [];
+
+        for (const word of words) {
+          const malformedWord = malformWord(word);
+
+          response.push(malformedWord.toLowerCase());
+        }
+
+        if (iphoneMessage) {
+          const msg =
+            (Math.random() % 2 > 0.5 ? "<br /><br />" : "") +
+            malformWord(getIphoneMessage());
+          response.push(Math.random() % 2 > 0.5 ? msg : msg.toLowerCase());
+        }
+
+        return response.join(" ");
+      };
+
+      const malformWord = (word) => {
+        // bail if the word is too short
+        if (word.length <= 3) {
+          return word;
+        }
+
+        const letters = [...word];
+
+        // conditionally remove a random letter, but not the 1st letter
+        if (Math.random() % 2 > 0.5 || word.length > 5) {
+          letters.splice(randomNumber(1, word.length + 1), 1);
+        }
+
+        let malformedWord = letters.join("");
+
+        // conditionally swap 2 letters that are next to each other
+        if (Math.random() % 2 > 0.25 && word.length > 4) {
+          malformedWord = swapRandomLetters(letters).join("");
+        }
+
+        return malformedWord;
+      };
+
+      const swapRandomLetters = (letters) => {
+        // get a random letter position, and then the letter next to it
+        const swapLetter1 = randomNumber(0, letters.length - 1);
+        const swapLetter2 = swapLetter1 + 1;
+
+        // destructure array to swap letters
+        [letters[swapLetter1], letters[swapLetter2]] = [
+          letters[swapLetter2],
+          letters[swapLetter1],
+        ];
+
+        return letters;
+      };
+
+      const getIphoneMessage = () => {
+        const messages = ["Sent from iPhone", "Sent from my iPhone", "iPhone"];
+        const message = messages[randomNumber(0, messages.length)];
+
+        return message;
+      };
+
+      const randomNumber = (min, max) =>
+        Math.floor(Math.random() * (max - min) + min);
+
+      document.querySelector("button").addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const message = document.querySelector("textarea").value;
+        const outputEl = document.querySelector("#output");
+
+        if (!message) {
+          outputEl.classList.add("hidden");
+          return;
+        }
+
+        const babyreindeerified = babyReindeerify(
+          message,
+          document.querySelector("#iphone").checked
+        );
+
+        outputEl.classList.remove("hidden");
+        outputEl.innerHTML = babyreindeerified;
+      });
+    </script>
+  </body>
+</html>
