@@ -190,7 +190,11 @@
 
         // conditionally remove a random letter, but not the 1st letter
         if (Math.random() % 2 > 0.5 || word.length > 5) {
-          letters.splice(randomNumber(1, word.length + 1), 1);
+          const idx = randomNumber(1, word.length + 1);
+          const letter = letters[idx];
+          if (letter !== "\n") {
+            letters.splice(idx, 1);
+          }
         }
 
         let malformedWord = letters.join("");
@@ -244,7 +248,8 @@
         );
 
         outputEl.classList.remove("hidden");
-        outputEl.querySelector("#output-message").innerHTML = babyreindeerified;
+        outputEl.querySelector("#output-message").innerHTML =
+          babyreindeerified.replace(/\n/g, "<br />");
       });
 
       document.querySelector("#copy").addEventListener("click", () => {
